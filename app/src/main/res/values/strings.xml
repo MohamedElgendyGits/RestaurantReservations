@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">RestaurantReservations</string>
+    <string name="connection_failed">You are not connected to the internet !!</string>
+    <string name="unknown_error">Something went wrong !!</string>
+    <string name="loading_message">Loading...</string>
+    <string name="retry">Retry</string>
+    <string name="table_available">Available</string>
+    <string name="table_reserved">Reserved</string>
+    <string name="booking_error">Table is already reserved !</string>
+    <string name="booking_title">Booking Table</string>
+    <string name="booking_message">Booking table number %1$s ?</string>
+    <string name="book_table">Book Table</string>
+    <string name="cancel">Cancel</string>
+
+</resources>

@@ -1,0 +1,79 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        applicationId "com.android.restaurantreservations"
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+project.ext {
+    appcompat = "25.3.1"
+    constraintLayout = "1.0.2"
+    jobDispatcher = "0.8.3"
+    picasso = "2.5.2"
+    retrofit = "2.3.0"
+    rxAndroid = "2.0.1"
+    rxJava = "2.1.3"
+    butterKnife = "8.8.1"
+    arch = "1.0.0-beta2"
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    //noinspection GradleCompatible
+    compile "com.android.support:appcompat-v7:$project.appcompat"
+    compile "com.android.support.constraint:constraint-layout:$project.constraintLayout"
+    compile "com.android.support:design:$project.appcompat"
+    compile "com.android.support:recyclerview-v7:$project.appcompat"
+    compile "com.android.support:cardview-v7:$project.appcompat"
+
+    // job dispatcher library
+    compile "com.firebase:firebase-jobdispatcher:$project.jobDispatcher"
+
+    // picasso image library
+    compile "com.squareup.picasso:picasso:$project.picasso"
+
+    // retrofit network library
+    compile "com.squareup.retrofit2:retrofit:$project.retrofit"
+    compile "com.squareup.retrofit2:converter-gson:$project.retrofit"
+    compile "com.squareup.retrofit2:adapter-rxjava2:$project.retrofit"
+
+    // rx-java2 library
+    compile "io.reactivex.rxjava2:rxandroid:$project.rxAndroid"
+    compile "io.reactivex.rxjava2:rxjava:$project.rxJava"
+
+    // butter-knife injector library
+    compile "com.jakewharton:butterknife:$project.butterKnife"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$project.butterKnife"
+
+    //Architecture Components for life cycle
+    compile "android.arch.lifecycle:runtime:$project.arch"
+    compile "android.arch.lifecycle:extensions:$project.arch"
+    annotationProcessor "android.arch.lifecycle:compiler:$project.arch"
+
+    //Architecture Components for room
+    compile "android.arch.persistence.room:runtime:$project.arch"
+    annotationProcessor "android.arch.persistence.room:compiler:$project.arch"
+
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    testCompile 'junit:junit:4.12'
+}
+
+
