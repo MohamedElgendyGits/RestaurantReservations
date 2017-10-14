@@ -22,22 +22,15 @@ Application libraries :
 
 
 
-
-* Customers Screen.
-
+* Customers Screen
 
 
 ![ScreenShot](https://raw.github.com/MohamedElgendyGits/RestaurantReservations/master/screenshots/Screenshot1.png)
 
 
-* Tables Screen 
+* Tables Screen
 
-{blank}
-{blank}
 
 ![ScreenShot](https://raw.github.com/MohamedElgendyGits/RestaurantReservations/master/screenshots/Screenshot2.png)
 
 
-
-{blank}
-{blank}
