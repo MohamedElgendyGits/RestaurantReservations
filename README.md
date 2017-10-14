@@ -18,15 +18,17 @@ Application libraries :
 * Picasso for image loading
 * Room for database manipulations
 * Espresso for UI tests
-* mockito for Unit tests +
+* mockito for Unit tests.
 
 
-* Customers Screen 
+
+
+* Customers Screen.
+
+
 
 ![ScreenShot](https://raw.github.com/MohamedElgendyGits/RestaurantReservations/master/screenshots/Screenshot1.png)
 
-{blank}
-{blank}
 
 * Tables Screen 
 
