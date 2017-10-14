@@ -21,6 +21,7 @@ import com.android.restaurantreservations.R;
 import com.android.restaurantreservations.application.RestaurantReservationsApp;
 import com.android.restaurantreservations.base.injector.Injection;
 import com.android.restaurantreservations.base.view.BaseFragment;
+import com.android.restaurantreservations.main.MainActivity;
 import com.android.restaurantreservations.main.presenter.CustomerPresenter;
 import com.android.restaurantreservations.main.presenter.CustomerPresenterImpl;
 import com.android.restaurantreservations.main.view.adapter.CustomerListAdapter;
@@ -116,6 +117,10 @@ public class ReservationFragment extends BaseFragment implements ReservationView
     private void initializePresenter() {
         reservationPresenter = new ReservationPresenterImpl(this,
                 Injection.provideReservationRepository(RestaurantReservationsApp.getInstance()));
+
+
+        startIdlingResource();
+
         reservationPresenter.loadReservations();
     }
 
@@ -131,17 +136,26 @@ public class ReservationFragment extends BaseFragment implements ReservationView
 
     @Override
     public void hideProgressLoading() {
+
+        stopIdlingResource();
+
         if (progressDialog != null)
             progressDialog.dismiss();
     }
 
     @Override
     public void showInlineError(String error) {
+
+        stopIdlingResource();
+
         DialogUtils.getSnackBar(getView(), error, null, null).show();
     }
 
     @Override
     public void showInlineConnectionError(String error) {
+
+        stopIdlingResource();
+
         Snackbar.make(getView(), error
                 , Snackbar.LENGTH_INDEFINITE)
                 .setAction(R.string.retry, new View.OnClickListener() {
@@ -156,6 +170,9 @@ public class ReservationFragment extends BaseFragment implements ReservationView
 
     @Override
     public void loadReservationsList(List<ReservationViewModel> reservations) {
+
+        stopIdlingResource();
+
         reservationViewModelArrayList.clear();
         reservationAdapter.notifyDataSetChanged();
 
@@ -174,6 +191,9 @@ public class ReservationFragment extends BaseFragment implements ReservationView
                 .setPositiveButton(R.string.book_table, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+                        startIdlingResource();
+
                         reservationPresenter.updateTableStatus(reservationViewModel, position);
                     }
                 })
@@ -183,11 +203,17 @@ public class ReservationFragment extends BaseFragment implements ReservationView
 
     @Override
     public void showInlineBookingError(String error) {
+
+        stopIdlingResource();
+
         DialogUtils.getSnackBar(getView(), error, null, null).show();
     }
 
     @Override
     public void updateGridStatus(ReservationViewModel reservationViewModel, int position) {
+
+        stopIdlingResource();
+
         ((ReservationListAdapter)reservationAdapter).updateItem(position,reservationViewModel);
         reservationsRecyclerView.setItemAnimator(null);
     }
@@ -214,5 +240,26 @@ public class ReservationFragment extends BaseFragment implements ReservationView
     public void onStop() {
         super.onStop();
         reservationPresenter.onViewDetached();
+    }
+
+
+    /**
+     * The IdlingResource is null in production as set by the @Nullable annotation which means
+     * the value is allowed to be null.
+     *
+     * If the idle state is true, Espresso can perform the next action.
+     * If the idle state is false, Espresso will wait until it is true before
+     * performing the next action.
+     */
+
+    private void startIdlingResource() {
+        if (((ReservationActivity)getActivity()).mIdlingResource != null) {
+            ((ReservationActivity)getActivity()).mIdlingResource.setIdleState(false);
+        }
+    }
+    private void stopIdlingResource(){
+        if (((ReservationActivity)getActivity()).mIdlingResource != null) {
+            ((ReservationActivity)getActivity()).mIdlingResource.setIdleState(true);
+        }
     }
 }

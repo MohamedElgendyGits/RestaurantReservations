@@ -10,7 +10,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_margin="@dimen/card_view_margin_layout"
-        card_view:cardCornerRadius="@dimen/card_view_radius"
         card_view:elevation="@dimen/card_view_elevation">
 
         <LinearLayout

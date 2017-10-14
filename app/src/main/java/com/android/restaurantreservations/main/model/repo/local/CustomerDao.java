@@ -32,6 +32,9 @@ public interface CustomerDao {
     @Insert
     void insertAllCustomers(List<Customer> customers);
 
+    @Query("SELECT * FROM customers where first_name LIKE :query")
+    List<Customer> search(String query);
+
     @Delete
     void delete(Customer customer);
 

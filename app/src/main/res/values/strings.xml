@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RestaurantReservations</string>
+    <string name="app_name">Quandoo</string>
     <string name="connection_failed">You are not connected to the internet !!</string>
     <string name="unknown_error">Something went wrong !!</string>
     <string name="loading_message">Loading...</string>
@@ -12,5 +12,6 @@
     <string name="book_table">Book Table</string>
     <string name="cancel">Cancel</string>
     <string name="clear_reservations">All reservations have been removed</string>
+    <string name="search">search</string>
 
 </resources>

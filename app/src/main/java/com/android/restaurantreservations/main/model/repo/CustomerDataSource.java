@@ -17,4 +17,5 @@ public interface CustomerDataSource {
     Observable<List<Customer>> getCustomers();
     Observable<List<Customer>> getOfflineCustomers();
     void saveCustomer(Customer customer);
+    Observable<List<Customer>> searchByCustomer(String query);
 }

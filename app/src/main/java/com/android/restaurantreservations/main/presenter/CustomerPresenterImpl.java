@@ -65,7 +65,37 @@ public class CustomerPresenterImpl implements CustomerPresenter {
 
     @Override
     public void searchByCustomer(String query) {
-        //todo searchByCustomer
+
+        Disposable disposable = customerRepository.searchByCustomer("%"+query+"%")
+                .subscribeOn(Schedulers.io())
+                .flatMap(new Function<List<Customer>, Observable<CustomerViewModel>>() {
+                    @Override
+                    public Observable<CustomerViewModel> apply(@NonNull List<Customer> customers) throws Exception {
+                        return getMap(customers);
+                    }
+                }).toList().toObservable()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver<List<CustomerViewModel>>() {
+                    @Override
+                    public void onNext(@NonNull List<CustomerViewModel> customers) {
+                        if (isViewAttached) {
+                            customerView.filterCustomersList(customers);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        if (isViewAttached) {
+                            customerView.showInlineError(TextUtils.getString(R.string.unknown_error));
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+
+        mCompositeDisposable.add(disposable);
     }
 
     private void retrieveFreshOrCachedCustomers() {

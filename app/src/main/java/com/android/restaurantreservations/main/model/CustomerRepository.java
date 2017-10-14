@@ -87,6 +87,11 @@ public class CustomerRepository implements CustomerDataSource {
         customerLocalDataSource.saveCustomer(customer);
     }
 
+    @Override
+    public Observable<List<Customer>> searchByCustomer(String query) {
+        return customerLocalDataSource.searchByCustomer(query);
+    }
+
     private Observable<List<Customer>> getCachedLocalCustomers() {
         return customerLocalDataSource.getCustomers();
     }

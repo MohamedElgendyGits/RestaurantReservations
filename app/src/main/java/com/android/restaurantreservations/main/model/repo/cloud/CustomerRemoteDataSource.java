@@ -48,4 +48,12 @@ public class CustomerRemoteDataSource implements CustomerDataSource {
          handle this method to the local data source
          */
     }
+
+    @Override
+    public Observable<List<Customer>> searchByCustomer(String query) {
+        return null;
+        /* Not required for the remote data source because the customer repository
+         handle this method to the local data source
+         */
+    }
 }

@@ -56,4 +56,14 @@ public class CustomerLocalDataSource implements CustomerDataSource {
     public void saveCustomer(final Customer customer) {
         appDatabase.customerDao().addCustomer(customer);
     }
+
+    @Override
+    public Observable<List<Customer>> searchByCustomer(final String query) {
+        return Observable.fromCallable(new Callable<List<Customer>>() {
+            @Override
+            public List<Customer> call() throws Exception {
+                return appDatabase.customerDao().search(query);
+            }
+        });
+    }
 }
