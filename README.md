@@ -10,13 +10,13 @@ Instead of using a package by layer approach, application structured by package 
 
 Application libraries :
 
-MVP for architecture pattern
-retrofit for network calls
-RxJava 2 for reactive programming and threads handling
-FirebaseJobDispatcher for background perodic tasks
-ButterKnife for injecting views
-Picasso for image loading
-Room for database manipulations
-Espresso for UI tests
-mockito for Unit tests
+* MVP for architecture pattern
+* retrofit for network calls
+* RxJava 2 for reactive programming and threads handling
+* FirebaseJobDispatcher for background perodic tasks
+* ButterKnife for injecting views
+* Picasso for image loading
+* Room for database manipulations
+* Espresso for UI tests
+* mockito for Unit tests
 
