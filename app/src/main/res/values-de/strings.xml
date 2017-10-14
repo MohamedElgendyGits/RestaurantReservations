@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Quandoo</string>
+    <string name="connection_failed">Sie sind nicht mit dem Internet verbunden !!</string>
+    <string name="unknown_error">Etwas ist schief gelaufen !!</string>
+    <string name="loading_message">Laden...</string>
+    <string name="retry">Wiederholen</string>
+    <string name="table_available">Verfügbar</string>
+    <string name="table_reserved">Reserviert</string>
+    <string name="booking_error">Tabelle ist bereits reserviert !</string>
+    <string name="booking_title">Buchung Tabelle</string>
+    <string name="booking_message">Buchung tabelle nummer %1$s ?</string>
+    <string name="book_table">Buch tabelle</string>
+    <string name="cancel">Stornieren</string>
+    <string name="clear_reservations">Alle Reservierungen wurden entfernt</string>
+    <string name="search">Suche</string>
+
+</resources>

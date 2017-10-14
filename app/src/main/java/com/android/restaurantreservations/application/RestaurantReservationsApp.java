@@ -10,8 +10,6 @@ import com.android.restaurantreservations.service.JobServiceManager;
 
 public class RestaurantReservationsApp extends Application {
 
-    //todo translate application to german
-
     private static RestaurantReservationsApp instance;
 
     public static RestaurantReservationsApp getInstance() {
