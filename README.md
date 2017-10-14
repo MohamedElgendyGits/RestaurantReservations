@@ -20,17 +20,31 @@ Application libraries :
 * Espresso for UI tests
 * mockito for Unit tests
 
-
++
++
++
 
 
 * Customers Screen 
 
 
-![ScreenShot](https://raw.github.com/MohamedElgendyGits/RestaurantReservations/master/screenshots/Screenshot_1.png)
++
++
 
+![ScreenShot](https://raw.github.com/MohamedElgendyGits/RestaurantReservations/master/screenshots/Screenshot1.png)
 
++
++
 
 * Tables Screen 
 
 
-![ScreenShot](https://raw.github.com/MohamedElgendyGits/RestaurantReservations/master/screenshots/Screenshot_2.png)
++
++
+
+![ScreenShot](https://raw.github.com/MohamedElgendyGits/RestaurantReservations/master/screenshots/Screenshot2.png)
+
+
+
++
++
