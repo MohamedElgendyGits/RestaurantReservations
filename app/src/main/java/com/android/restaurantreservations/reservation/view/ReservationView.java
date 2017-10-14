@@ -14,4 +14,5 @@ public interface ReservationView extends BaseView {
     void showBookingDialog(ReservationViewModel reservationViewModel, int position);
     void showInlineBookingError(String error);
     void updateGridStatus(ReservationViewModel reservationViewModel,int position);
+    void clearAllGridStatus();
 }

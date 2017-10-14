@@ -85,16 +85,6 @@ public class CustomerFragment extends BaseFragment implements CustomerView , Cus
 
     @Override
     public void showProgressLoading() {
-        /*if (NearByApplication.isActivityVisible()) {
-            if (progressDialog == null)
-                progressDialog = DialogUtils.getProgressDialog(getActivity(),
-                        TextUtils.getString(R.string.loading_message), false,
-                        false);
-
-            progressDialog.show();
-        }*/
-
-        //todo check activity attached or not
         if (progressDialog == null)
             progressDialog = DialogUtils.getProgressDialog(getActivity(),
                     TextUtils.getString(R.string.loading_message), false,
@@ -105,43 +95,17 @@ public class CustomerFragment extends BaseFragment implements CustomerView , Cus
 
     @Override
     public void hideProgressLoading() {
-        /*if (NearByApplication.isActivityVisible()) {
-            if (progressDialog != null)
-                progressDialog.dismiss();
-        }*/
-
-        //todo check activity attached or not
         if (progressDialog != null)
             progressDialog.dismiss();
     }
 
     @Override
     public void showInlineError(String error) {
-        /*
-        if (NearByApplication.isActivityVisible()) {
-            DialogUtils.getSnackBar(getView(), error, null, null).show();
-        }
-        */
-
-        //todo check activity attached or not
         DialogUtils.getSnackBar(getView(), error, null, null).show();
     }
 
     @Override
     public void showInlineConnectionError(String error) {
-        /*if (NearByApplication.isActivityVisible()) {
-            Snackbar.make(getView(), error
-                    , Snackbar.LENGTH_INDEFINITE)
-                    .setAction(R.string.retry, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            nearByPresenter.startLocationRefresh();
-                        }
-                    })
-                    .show();
-        }*/
-
-        //todo check activity attached or not
         Snackbar.make(getView(), error
                 , Snackbar.LENGTH_INDEFINITE)
                 .setAction(R.string.retry, new View.OnClickListener() {
@@ -155,15 +119,6 @@ public class CustomerFragment extends BaseFragment implements CustomerView , Cus
 
     @Override
     public void loadCustomersList(List<CustomerViewModel> customerViewModels) {
-        /*if(NearByApplication.isActivityVisible()) {
-        customerViewModelArrayList.clear();
-        customerAdapter.notifyDataSetChanged();
-
-        customerViewModelArrayList.addAll(customerViewModels);
-        customerAdapter.notifyDataSetChanged();
-        }*/
-
-        //todo check activity attached or not
         customerViewModelArrayList.clear();
         customerAdapter.notifyDataSetChanged();
 
@@ -184,14 +139,19 @@ public class CustomerFragment extends BaseFragment implements CustomerView , Cus
 
     @Override
     public void onCustomerClick(int position, View v) {
-        Toast.makeText(getActivity(), position+"", Toast.LENGTH_SHORT).show();
+        Intent reservationsIntent = new Intent(getActivity(),ReservationActivity.class);
+        startActivity(reservationsIntent);
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onResume() {
+        super.onResume();
+        customerPresenter.onViewAttached(this);
+    }
 
-        //todo check if it works fine after rotation
-        customerPresenter.clearRxDisposables();
+    @Override
+    public void onStop() {
+        super.onStop();
+        customerPresenter.onViewDetached();
     }
 }

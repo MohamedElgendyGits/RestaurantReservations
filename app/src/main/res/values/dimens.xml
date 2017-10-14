@@ -2,15 +2,15 @@
 <resources>
 
     <!-- list_item_customer.xml -->
-    <dimen name="recycler_view_margin">5dp</dimen>
-    <dimen name="card_view_radius">10dp</dimen>
-    <dimen name="card_view_elevation">3dp</dimen>
-    <dimen name="card_view_margin_layout">3dp</dimen>
-    <dimen name="first_name_text_size">15sp</dimen>
-    <dimen name="last_name_text_size">12sp</dimen>
-    <dimen name="table_text_size">15sp</dimen>
-    <dimen name="text_view_margin_layout">5dp</dimen>
-    <dimen name="image_width">40dp</dimen>
-    <dimen name="image_height">40dp</dimen>
+    <dimen name="recycler_view_margin">@dimen/_5sdp</dimen>
+    <dimen name="card_view_radius">@dimen/_10sdp</dimen>
+    <dimen name="card_view_elevation">@dimen/_3sdp</dimen>
+    <dimen name="card_view_margin_layout">@dimen/_3sdp</dimen>
+    <dimen name="first_name_text_size">@dimen/_15ssp</dimen>
+    <dimen name="last_name_text_size">@dimen/_12ssp</dimen>
+    <dimen name="table_text_size">@dimen/_15ssp</dimen>
+    <dimen name="text_view_margin_layout">@dimen/_5sdp</dimen>
+    <dimen name="image_width">@dimen/_40sdp</dimen>
+    <dimen name="image_height">@dimen/_40sdp</dimen>
 
 </resources>

@@ -9,10 +9,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
 import com.android.restaurantreservations.R;
@@ -28,6 +30,7 @@ import com.android.restaurantreservations.reservation.adapter.ReservationListAda
 import com.android.restaurantreservations.reservation.adapter.ReservationViewModel;
 import com.android.restaurantreservations.reservation.presenter.ReservationPresenter;
 import com.android.restaurantreservations.reservation.presenter.ReservationPresenterImpl;
+import com.android.restaurantreservations.service.RxBus;
 import com.android.restaurantreservations.utils.DialogUtils;
 import com.android.restaurantreservations.utils.TextUtils;
 
@@ -36,6 +39,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by Mohamed Elgendy.
@@ -77,13 +81,36 @@ public class ReservationFragment extends BaseFragment implements ReservationView
 
         // initialize views
         reservationsRecyclerView.setHasFixedSize(true);
-        reservationLayoutManager = new GridLayoutManager(getActivity(),3); //todo make it dynamically fit
+        reservationLayoutManager = new GridLayoutManager(getActivity(),3);
         reservationsRecyclerView.setLayoutManager(reservationLayoutManager);
         reservationViewModelArrayList = new ArrayList<>();
         reservationAdapter = new ReservationListAdapter(reservationViewModelArrayList,this);
         reservationsRecyclerView.setAdapter(reservationAdapter);
 
+
+        ViewTreeObserver viewTreeObserver = reservationsRecyclerView.getViewTreeObserver();
+        viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                calculateCellSize();
+            }
+        });
+
         initializePresenter();
+    }
+
+
+    private void calculateCellSize() {
+        int sColumnWidth = 100; // assume cell width of 100dp
+        int spanCount = (int) Math.floor(reservationsRecyclerView.getWidth() / convertDPToPixels(sColumnWidth));
+        ((GridLayoutManager) reservationsRecyclerView.getLayoutManager()).setSpanCount(spanCount);
+    }
+
+    private int convertDPToPixels(int sColumnWidth) {
+        DisplayMetrics metrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        float logicalDensity = metrics.density;
+        return (int) (sColumnWidth * logicalDensity);
     }
 
     private void initializePresenter() {
@@ -94,16 +121,6 @@ public class ReservationFragment extends BaseFragment implements ReservationView
 
     @Override
     public void showProgressLoading() {
-        /*if (NearByApplication.isActivityVisible()) {
-            if (progressDialog == null)
-                progressDialog = DialogUtils.getProgressDialog(getActivity(),
-                        TextUtils.getString(R.string.loading_message), false,
-                        false);
-
-            progressDialog.show();
-        }*/
-
-        //todo check activity attached or not
         if (progressDialog == null)
             progressDialog = DialogUtils.getProgressDialog(getActivity(),
                     TextUtils.getString(R.string.loading_message), false,
@@ -114,43 +131,17 @@ public class ReservationFragment extends BaseFragment implements ReservationView
 
     @Override
     public void hideProgressLoading() {
-        /*if (NearByApplication.isActivityVisible()) {
-            if (progressDialog != null)
-                progressDialog.dismiss();
-        }*/
-
-        //todo check activity attached or not
         if (progressDialog != null)
             progressDialog.dismiss();
     }
 
     @Override
     public void showInlineError(String error) {
-        /*
-        if (NearByApplication.isActivityVisible()) {
-            DialogUtils.getSnackBar(getView(), error, null, null).show();
-        }
-        */
-
-        //todo check activity attached or not
         DialogUtils.getSnackBar(getView(), error, null, null).show();
     }
 
     @Override
     public void showInlineConnectionError(String error) {
-        /*if (NearByApplication.isActivityVisible()) {
-            Snackbar.make(getView(), error
-                    , Snackbar.LENGTH_INDEFINITE)
-                    .setAction(R.string.retry, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            nearByPresenter.startLocationRefresh();
-                        }
-                    })
-                    .show();
-        }*/
-
-        //todo check activity attached or not
         Snackbar.make(getView(), error
                 , Snackbar.LENGTH_INDEFINITE)
                 .setAction(R.string.retry, new View.OnClickListener() {
@@ -165,15 +156,6 @@ public class ReservationFragment extends BaseFragment implements ReservationView
 
     @Override
     public void loadReservationsList(List<ReservationViewModel> reservations) {
-        /*if(NearByApplication.isActivityVisible()) {
-                reservationViewModelArrayList.clear();
-        reservationAdapter.notifyDataSetChanged();
-
-        reservationViewModelArrayList.addAll(reservationViewModelList);
-        reservationAdapter.notifyDataSetChanged();
-        }*/
-
-        //todo check activity attached or not
         reservationViewModelArrayList.clear();
         reservationAdapter.notifyDataSetChanged();
 
@@ -185,7 +167,6 @@ public class ReservationFragment extends BaseFragment implements ReservationView
     public void showBookingDialog(final ReservationViewModel reservationViewModel, final int position) {
         if (bookingDialog != null)
             bookingDialog.dismiss();
-
 
         bookingDialog = new AlertDialog.Builder(getActivity())
                 .setTitle(TextUtils.getString(R.string.booking_title))
@@ -207,8 +188,14 @@ public class ReservationFragment extends BaseFragment implements ReservationView
 
     @Override
     public void updateGridStatus(ReservationViewModel reservationViewModel, int position) {
-        Toast.makeText(getActivity(), position +"updated", Toast.LENGTH_SHORT).show();
-        //reservationAdapter.notifyItemChanged(position,reservationViewModel);
+        ((ReservationListAdapter)reservationAdapter).updateItem(position,reservationViewModel);
+        reservationsRecyclerView.setItemAnimator(null);
+    }
+
+    @Override
+    public void clearAllGridStatus() {
+        ((ReservationListAdapter)reservationAdapter).updateAllItems();
+        reservationsRecyclerView.setItemAnimator(null);
     }
 
 
@@ -218,14 +205,14 @@ public class ReservationFragment extends BaseFragment implements ReservationView
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-
-        //todo check if it works fine after rotation
-        reservationPresenter.clearRxDisposables();
+    public void onResume() {
+        super.onResume();
+        reservationPresenter.onViewAttached(this);
     }
 
-
-
-
+    @Override
+    public void onStop() {
+        super.onStop();
+        reservationPresenter.onViewDetached();
+    }
 }

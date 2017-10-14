@@ -11,5 +11,6 @@
     <string name="booking_message">Booking table number %1$s ?</string>
     <string name="book_table">Book Table</string>
     <string name="cancel">Cancel</string>
+    <string name="clear_reservations">All reservations have been removed</string>
 
 </resources>

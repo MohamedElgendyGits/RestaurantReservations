@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.restaurantreservations.R;
@@ -30,7 +31,7 @@ public class ReservationListAdapter extends RecyclerView.Adapter<ReservationList
     public static class DataObjectHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.imageView_table)
-        AppCompatImageView tableImageView;
+        ImageView tableImageView;
 
         @BindView(R.id.textView_table_status)
         TextView tableStatusTextView;
@@ -70,14 +71,14 @@ public class ReservationListAdapter extends RecyclerView.Adapter<ReservationList
 
         if(reservationViewModel.isTableStatus()){
             Picasso.with(context)
-                    .load(R.drawable.table_empty)
+                    .load(R.drawable.ic_table_empty)
                     .fit()
                     .into(holder.tableImageView);
 
             holder.tableStatusTextView.setText(TextUtils.getString(R.string.table_available));
         } else {
             Picasso.with(context)
-                    .load(R.drawable.table_reserved)
+                    .load(R.drawable.ic_table_reserved)
                     .fit()
                     .into(holder.tableImageView);
 
@@ -94,6 +95,21 @@ public class ReservationListAdapter extends RecyclerView.Adapter<ReservationList
     public void deleteItem(int index) {
         mDataSet.remove(index);
         notifyItemRemoved(index);
+    }
+
+    public void updateItem(int index, ReservationViewModel dataObj) {
+        mDataSet.set(index,dataObj);
+        notifyItemChanged(index,dataObj);
+    }
+
+    public void updateAllItems(){
+        ReservationViewModel reservationViewModel;
+        for(int i=0; i<mDataSet.size(); i++){
+            reservationViewModel = mDataSet.get(i);
+            reservationViewModel.setTableStatus(true);
+            mDataSet.set(i,reservationViewModel);
+            notifyItemChanged(i,reservationViewModel);
+        }
     }
 
     @Override

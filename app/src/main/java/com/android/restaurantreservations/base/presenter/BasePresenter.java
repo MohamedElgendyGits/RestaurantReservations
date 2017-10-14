@@ -1,9 +1,12 @@
 package com.android.restaurantreservations.base.presenter;
 
+import com.android.restaurantreservations.base.view.BaseView;
+
 /**
  * Created by Mohamed Elgendy.
  */
 
 public interface BasePresenter {
-    void clearRxDisposables();
+    void onViewAttached(BaseView view);
+    void onViewDetached();
 }

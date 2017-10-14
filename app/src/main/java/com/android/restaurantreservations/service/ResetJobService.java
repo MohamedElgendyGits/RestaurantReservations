@@ -23,6 +23,8 @@ public class ResetJobService extends JobService {
             protected Object doInBackground(Object[] objects) {
                 Injection.provideReservationRepository
                         (RestaurantReservationsApp.getInstance()).deleteAllReservations();
+
+                RxBus.publish("");
                 return null;
             }
 

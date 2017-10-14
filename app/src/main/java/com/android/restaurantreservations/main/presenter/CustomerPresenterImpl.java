@@ -6,6 +6,7 @@ import android.widget.Toast;
 import com.android.restaurantreservations.R;
 import com.android.restaurantreservations.application.RestaurantReservationsApp;
 import com.android.restaurantreservations.base.repo.cloud.RetrofitClient;
+import com.android.restaurantreservations.base.view.BaseView;
 import com.android.restaurantreservations.main.model.CustomerRepository;
 import com.android.restaurantreservations.main.model.entity.Customer;
 import com.android.restaurantreservations.main.model.repo.cloud.CustomerApiService;
@@ -36,6 +37,7 @@ public class CustomerPresenterImpl implements CustomerPresenter {
     private CustomerView customerView;
     private CustomerRepository customerRepository;
     private CompositeDisposable mCompositeDisposable;
+    private boolean isViewAttached;
 
     public CustomerPresenterImpl(CustomerView customerView, CustomerRepository customerRepository) {
         this.customerView = customerView;
@@ -56,7 +58,9 @@ public class CustomerPresenterImpl implements CustomerPresenter {
 
     @Override
     public void showReservationScreen() {
-        customerView.openReservationScreen();
+        if (isViewAttached) {
+            customerView.openReservationScreen();
+        }
     }
 
     @Override
@@ -66,7 +70,9 @@ public class CustomerPresenterImpl implements CustomerPresenter {
 
     private void retrieveFreshOrCachedCustomers() {
 
-        customerView.showProgressLoading();
+        if (isViewAttached) {
+            customerView.showProgressLoading();
+        }
 
         Disposable disposable = customerRepository.getCustomers()
                 .subscribeOn(Schedulers.io())
@@ -80,18 +86,25 @@ public class CustomerPresenterImpl implements CustomerPresenter {
                 .subscribeWith(new DisposableObserver<List<CustomerViewModel>>() {
                     @Override
                     public void onNext(@NonNull List<CustomerViewModel> customers) {
-                        customerView.loadCustomersList(customers);
+                        if (isViewAttached) {
+                            customerView.loadCustomersList(customers);
+                        }
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        customerView.hideProgressLoading();
-                        customerView.showInlineError(TextUtils.getString(R.string.unknown_error));
+                        if (isViewAttached) {
+                            customerView.hideProgressLoading();
+                            customerView.showInlineError(TextUtils.getString(R.string.unknown_error));
+                        }
                     }
 
                     @Override
                     public void onComplete() {
-                        customerView.hideProgressLoading();
+                        if (isViewAttached) {
+                            customerView.hideProgressLoading();
+                        }
+
                     }
                 });
 
@@ -121,16 +134,21 @@ public class CustomerPresenterImpl implements CustomerPresenter {
                 .subscribeWith(new DisposableObserver<List<CustomerViewModel>>() {
                     @Override
                     public void onNext(@NonNull List<CustomerViewModel> customers) {
-                        if(!customers.isEmpty()){
-                            customerView.loadCustomersList(customers);
-                        }else {
-                            customerView.showInlineConnectionError(TextUtils.getString(R.string.connection_failed));
+
+                        if (isViewAttached) {
+                            if (!customers.isEmpty()) {
+                                customerView.loadCustomersList(customers);
+                            } else {
+                                customerView.showInlineConnectionError(TextUtils.getString(R.string.connection_failed));
+                            }
                         }
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        customerView.showInlineError(TextUtils.getString(R.string.unknown_error));
+                        if (isViewAttached) {
+                            customerView.showInlineError(TextUtils.getString(R.string.unknown_error));
+                        }
                     }
 
                     @Override
@@ -142,7 +160,13 @@ public class CustomerPresenterImpl implements CustomerPresenter {
     }
 
     @Override
-    public void clearRxDisposables() {
+    public void onViewAttached(BaseView view) {
+        isViewAttached = true;
+    }
+
+    @Override
+    public void onViewDetached() {
+        isViewAttached = false;
         mCompositeDisposable.clear();
     }
 }
