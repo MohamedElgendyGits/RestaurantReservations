@@ -25,13 +25,13 @@ Application libraries :
 
 
 
-* Customers Screen
+_Customers Screen_**. 
 
 
 ![ScreenShot](https://raw.github.com/MohamedElgendyGits/RestaurantReservations/master/screenshots/Screenshot1.png)
 
 
-* Tables Screen
+_Tables Screen_**. 
 
 
 ![ScreenShot](https://raw.github.com/MohamedElgendyGits/RestaurantReservations/master/screenshots/Screenshot2.png)
